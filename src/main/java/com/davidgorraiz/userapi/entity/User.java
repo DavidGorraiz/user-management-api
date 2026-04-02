@@ -27,7 +27,9 @@ public class User {
     @Column(name = "last_login", nullable = false)
     private LocalDateTime lastLogin;
 
-    public User(Long id, String username, String email, String password, boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLogin) {
+    public User(Long id, String username, String email, String password,
+                boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt,
+                LocalDateTime lastLogin) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -36,5 +38,8 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.lastLogin = lastLogin;
+    }
+
+    public User() {
     }
 }
