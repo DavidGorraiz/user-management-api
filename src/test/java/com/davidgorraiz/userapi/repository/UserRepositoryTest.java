@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserRepositoryTest {
 
     @Autowired
-    private UserClassRepository userClassRepository;
+    private UserRepository userRepository;
     @Autowired
     private JpaUserRepository jpaUserRepository;
 
@@ -49,7 +49,8 @@ public class UserRepositoryTest {
         jpaUserRepository.save(user2);
 
         // Act
-        List<UserDTO> users = userClassRepository.getAll();
+        List<UserDTO> users = userRepository.getAll();
+        System.out.println(users);
 
         // Assert
         assertThat(users).isNotEmpty();
