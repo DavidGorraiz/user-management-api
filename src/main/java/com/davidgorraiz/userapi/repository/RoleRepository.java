@@ -1,4 +1,9 @@
 package com.davidgorraiz.userapi.repository;
 
-public class RoleRepository {
+import com.davidgorraiz.userapi.dto.RoleDTO;
+
+import java.util.List;
+
+public interface RoleRepository {
+    List<RoleDTO> getAll();
 }
