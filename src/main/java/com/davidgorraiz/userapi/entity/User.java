@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,6 +27,9 @@ public class User {
     private LocalDateTime updatedAt;
     @Column(name = "last_login", nullable = false)
     private LocalDateTime lastLogin;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserRole> userRoles;
 
     public User(Long id, String username, String email, String password,
                 boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt,
