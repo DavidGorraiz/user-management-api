@@ -6,7 +6,6 @@ public record UserDTO(
     Long id,
     String username,
     String email,
-    String password,
     Boolean enabled,
     LocalDateTime createdAt,
     LocalDateTime updatedAt,

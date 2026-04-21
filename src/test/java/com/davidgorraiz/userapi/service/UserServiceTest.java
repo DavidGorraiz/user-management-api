@@ -28,8 +28,8 @@ public class UserServiceTest {
     void shouldReturnAllUsers(){
         // Arrange
         List<UserDTO> users = List.of(
-                new UserDTO(1L, "David", "david@gmail.com", "1234", Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now()),
-                new UserDTO(2L, "Juan", "juan@gmail.com", "12345", Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())
+                new UserDTO(1L, "David", "david@gmail.com",  Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now()),
+                new UserDTO(2L, "Juan", "juan@gmail.com",  Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())
         );
 
         when(userRepository.getAll()).thenReturn(users);
