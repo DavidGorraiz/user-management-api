@@ -21,7 +21,7 @@ public class UserRole {
     private LocalDateTime assignedAt;
     @Column(name = "assigned_by", nullable = false)
     private Long assignedBy;
-    @Column(name = "revoked_at")
+    @Column(name = "revoked_at", nullable = false)
     private LocalDateTime revokedAt;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
