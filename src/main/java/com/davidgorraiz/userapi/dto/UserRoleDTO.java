@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public record UserRoleDTO(
         Long id,
-        User user,
-        Role role,
+        UserDTO user,
+        RoleDTO role,
         LocalDateTime assignedAt,
         Long assignedBy,
         LocalDateTime revokedAt
