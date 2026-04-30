@@ -1,5 +1,6 @@
 package com.davidgorraiz.userapi.controller;
 
+import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -29,12 +30,8 @@ public class UserControllerTest {
     void shouldReturnAllUsers() throws Exception {
 
         List<UserDTO> users = List.of(
-                new UserDTO(1L, "David", "david@gmail.com",
-                         Boolean.TRUE, LocalDateTime.now(),
-                        LocalDateTime.now(), LocalDateTime.now()),
-                new UserDTO(2L, "Juan", "juan@gmail.com",
-                         Boolean.TRUE, LocalDateTime.now(),
-                        LocalDateTime.now(), LocalDateTime.now())
+                UserTestData.createDefaultUserDto("David", "david@gmail.com"),
+                UserTestData.createDefaultUserDto("Juan", "juan@gmia.com")
         );
 
         when(userService.getAll()).thenReturn(users);

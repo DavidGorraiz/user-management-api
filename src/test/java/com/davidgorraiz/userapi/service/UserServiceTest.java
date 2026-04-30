@@ -1,5 +1,6 @@
 package com.davidgorraiz.userapi.service;
 
+import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ public class UserServiceTest {
     void shouldReturnAllUsers(){
         // Arrange
         List<UserDTO> users = List.of(
-                new UserDTO(1L, "David", "david@gmail.com",  Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now()),
-                new UserDTO(2L, "Juan", "juan@gmail.com",  Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now())
+                UserTestData.createDefaultUserDto("David", "david@gmail.com"),
+                UserTestData.createDefaultUserDto("juan", "juan@gmia.com")
         );
 
         when(userRepository.getAll()).thenReturn(users);
