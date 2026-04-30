@@ -1,5 +1,6 @@
 package com.davidgorraiz.userapi.repository;
 
+import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.entity.User;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaUserRepository;
@@ -26,27 +27,8 @@ public class UserRepositoryTest {
 
     @Test
     void shouldFindAllUsers() {
-        // Arrange
-        User user1 = new User();
-        user1.setUsername("david");
-        user1.setEmail("david@test.com");
-        user1.setPassword("1234");
-        user1.setEnabled(true);
-        user1.setCreatedAt(LocalDateTime.now());
-        user1.setUpdatedAt(LocalDateTime.now());
-        user1.setLastLogin(LocalDateTime.now());
-
-        User user2 = new User();
-        user2.setUsername("juan");
-        user2.setEmail("juan@test.com");
-        user2.setPassword("5678");
-        user2.setEnabled(true);
-        user2.setCreatedAt(LocalDateTime.now());
-        user2.setUpdatedAt(LocalDateTime.now());
-        user2.setLastLogin(LocalDateTime.now());
-
-        jpaUserRepository.save(user1);
-        jpaUserRepository.save(user2);
+        jpaUserRepository.save(UserTestData.createDefaultUser("david", "david@test.com"));
+        jpaUserRepository.save(UserTestData.createDefaultUser("juan", "juan@test.com"));
 
         // Act
         List<UserDTO> users = userRepository.getAll();
@@ -55,5 +37,28 @@ public class UserRepositoryTest {
         // Assert
         assertThat(users).isNotEmpty();
         assertThat(users.size()).isEqualTo(2);
+    }
+    @Test
+    void shouldFindUserById() {
+        // 1. We prepare the data
+        List<User> usersToSave = List.of(
+                UserTestData.createDefaultUser("david", "david@test.com"),
+                UserTestData.createDefaultUser("juan", "juan@test.com")
+        );
+
+        // 2. We save and CAPTURE the persisted entity (which already contains the actual ID)
+        List<User> savedUsers = List.of(
+                jpaUserRepository.save(usersToSave.get(0)),
+                jpaUserRepository.save(usersToSave.get(1))
+        );
+
+        // 3. Note: We use the actual ID provided by the database
+        UserDTO userDto = userRepository.getById(savedUsers.get(1).getId());
+        System.out.println("ID buscado: " + userDto.id());
+        System.out.println("Usuario encontrado: " + userDto);
+
+        // Assert
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.username()).isEqualTo("juan");
     }
 }
