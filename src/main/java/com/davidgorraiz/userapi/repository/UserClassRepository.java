@@ -3,6 +3,7 @@ package com.davidgorraiz.userapi.repository;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.dto.mapper.UserMapper;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaUserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +26,6 @@ public class UserClassRepository implements UserRepository {
 
     @Override
     public UserDTO getById(long id) {
-        return this.userMapper.toUserDto(this.jpaUserRepository.findById(id).orElse(null));
+        return this.userMapper.toUserDto(this.jpaUserRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id)));
     }
 }
