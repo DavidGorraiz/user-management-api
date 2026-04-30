@@ -44,6 +44,7 @@ public class UserRoleControllerTest {
         when(userRoleService.getAll()).thenReturn(userRoles);
 
         mockMvc.perform(get("/UserRole"))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[1].id").value("2"));
