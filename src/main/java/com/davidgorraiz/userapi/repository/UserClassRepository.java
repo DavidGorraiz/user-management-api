@@ -22,4 +22,9 @@ public class UserClassRepository implements UserRepository {
     public List<UserDTO> getAll() {
         return this.userMapper.toDtos(this.jpaUserRepository.findAll());
     }
+
+    @Override
+    public UserDTO getById(long id) {
+        return this.userMapper.toUserDto(this.jpaUserRepository.findById(id).orElse(null));
+    }
 }

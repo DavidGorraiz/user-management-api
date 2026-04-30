@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserRepository {
     List<UserDTO> getAll();
+    UserDTO getById(long id);
 }
