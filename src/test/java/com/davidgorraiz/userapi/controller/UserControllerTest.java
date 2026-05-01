@@ -42,4 +42,17 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].username").value("David"))
                 .andExpect(jsonPath("$[1].username").value("Juan"));
     }
+    @Test
+    void shouldReturnUserById() throws Exception {
+        List<UserDTO> users = List.of(
+                UserTestData.createDefaultUserDto("David", "david@gmail.com"),
+                UserTestData.createDefaultUserDto("Juan", "juan@gmia.com")
+        );
+
+        when(userService.getById(1)).thenReturn(users.get(0));
+
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("david@gmail.com"));
+    }
 }
