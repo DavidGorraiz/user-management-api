@@ -30,6 +30,6 @@ public class UserClassRepository implements UserRepository {
     public Optional<UserDTO> getById(long id) {
         return this.jpaUserRepository.findById(id)
                 .map(userMapper::toUserDto);
-        // Si findById es vacío, el map no se ejecuta y devuelve Optional.empty()
+        // Wenn findById leer ist, wird die Map-Methode nicht ausgeführt und gibt Optional.empty() zurück
     }
 }
