@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,5 +44,23 @@ public class UserServiceTest {
         assertEquals("David", result.get(0).username());
 
         verify(userRepository).getAll();
+    }
+    @Test
+    void shouldReturnUserById(){
+        // Arrange
+        List<UserDTO> users = List.of(
+                UserTestData.createDefaultUserDto("David", "david@gmail.com"),
+                UserTestData.createDefaultUserDto("juan", "juan@gmia.com")
+        );
+
+        when(userRepository.getById(2)).thenReturn(users.get(1));
+
+        //Act
+        UserDTO result = userService.getById(2);
+        System.out.println(result);
+
+        // Assert
+        assertThat(result).isNotNull();
+        assertEquals("juan", result.username());
     }
 }
