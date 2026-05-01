@@ -4,6 +4,7 @@ import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getById(long id) {
+    public ResponseEntity<UserDTO> getById(@PathVariable long id) {
         return ResponseEntity.ok(this.userService.getById(id));
     }
 }
