@@ -22,4 +22,9 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAll(){
         return ResponseEntity.ok(this.userService.getAll());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getById(long id) {
+        return ResponseEntity.ok(this.userService.getById(id));
+    }
 }
