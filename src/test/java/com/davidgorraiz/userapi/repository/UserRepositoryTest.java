@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,27 +61,21 @@ public class UserRepositoryTest {
         );
 
         // 3. Note: We use the actual ID provided by the database
-        UserDTO userDto = userRepository.getById(savedUsers.get(1).getId());
-        System.out.println("ID buscado: " + userDto.id());
+        Optional<UserDTO> userDto = userRepository.getById(savedUsers.get(1).getId());
+        System.out.println("ID buscado: " + userDto.get().id());
         System.out.println("Usuario encontrado: " + userDto);
 
         // Assert
         assertThat(userDto).isNotNull();
-        assertThat(userDto.username()).isEqualTo("juan");
+        assertThat(userDto.get().username()).isEqualTo("juan");
     }
     @Test
-    @DisplayName("It should throw an UserNotFoundException when the ID does not exist")
-    void shouldThrowExceptionWhenUserNotFound() {
-        // Arrange: We define an ID that doesn't exist (999 is usually safe in test environments)
-        Long nonExistentId = 999L;
+    @DisplayName("It must return an empty Optional if the ID does not exist")
+    void shouldReturnEmptyOptionalWhenIdDoesNotExist() {
+        // Act
+        Optional<UserDTO> result = userRepository.getById(999L);
 
-        // Act & Assert: We verify that calling the method triggers the expected exception
-        UserNotFoundException exception = // We catch the Spring exception
-                assertThrows(UserNotFoundException.class, () -> {
-                    userRepository.getById(nonExistentId);
-                });
-
-        // Optional: Verify that the exception message is correct
-        assertThat(exception.getMessage()).contains("not found");
+        // Assert
+        assertThat(result).isEmpty();
     }
 }

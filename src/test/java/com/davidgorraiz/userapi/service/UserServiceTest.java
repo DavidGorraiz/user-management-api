@@ -2,19 +2,23 @@ package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -53,7 +57,7 @@ public class UserServiceTest {
                 UserTestData.createDefaultUserDto("juan", "juan@gmia.com")
         );
 
-        when(userRepository.getById(2)).thenReturn(users.get(1));
+        when(userRepository.getById(2)).thenReturn(Optional.ofNullable(users.get(1)));
 
         //Act
         UserDTO result = userService.getById(2);
@@ -62,5 +66,16 @@ public class UserServiceTest {
         // Assert
         assertThat(result).isNotNull();
         assertEquals("juan", result.username());
+    }
+    @Test
+    @DisplayName("It should throw a UserNotFoundException when the ID does not exist")
+    void shouldThrowExceptionInService() {
+        // Arrange
+        Long id = 999L;
+        // Simulamos que el repo devuelve vacío
+        when(userRepository.getById(id)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(UserNotFoundException.class, () -> userService.getById(id));
     }
 }
