@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,6 @@ public class UserService {
     }
 
     public UserDTO getById(long id){
-        return this.userRepository.getById(id);
+        return this.userRepository.getById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 }

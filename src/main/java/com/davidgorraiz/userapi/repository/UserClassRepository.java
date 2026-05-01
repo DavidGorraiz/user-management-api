@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserClassRepository implements UserRepository {
@@ -26,7 +27,9 @@ public class UserClassRepository implements UserRepository {
     }
 
     @Override
-    public UserDTO getById(long id) {
-        return this.userMapper.toUserDto(this.jpaUserRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+    public Optional<UserDTO> getById(long id) {
+        return this.jpaUserRepository.findById(id)
+                .map(userMapper::toUserDto);
+        // Si findById es vacío, el map no se ejecuta y devuelve Optional.empty()
     }
 }
