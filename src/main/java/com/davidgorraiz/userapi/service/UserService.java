@@ -18,4 +18,8 @@ public class UserService {
     public List<UserDTO> getAll() {
         return this.userRepository.getAll();
     }
+
+    public UserDTO getById(long id){
+        return this.userRepository.getById(id);
+    }
 }

@@ -18,7 +18,7 @@ public class GlobalExceptionandler {
                 LocalDateTime.now(),
                 ex.getMessage(),
                 HttpStatus.NOT_FOUND.value(),
-                request.getDescription(false) // Esto saca la URL del error
+                request.getDescription(false) // This retrieves the error URL
         );
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

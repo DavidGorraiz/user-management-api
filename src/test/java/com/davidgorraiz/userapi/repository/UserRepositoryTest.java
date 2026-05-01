@@ -5,7 +5,6 @@ import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.entity.User;
 import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaUserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 @Nested
-@DisplayName("Pruebas de repositorio de usuarios")
+@DisplayName("User Repository Tests")
 public class UserRepositoryTest {
 
     @Autowired
@@ -33,7 +31,7 @@ public class UserRepositoryTest {
     private JpaUserRepository jpaUserRepository;
 
     @Test
-    @DisplayName("Debe retornar todos los usarios")
+    @DisplayName("It must return all users")
     void shouldFindAllUsers() {
         jpaUserRepository.save(UserTestData.createDefaultUser("david", "david@test.com"));
         jpaUserRepository.save(UserTestData.createDefaultUser("juan", "juan@test.com"));
@@ -47,7 +45,7 @@ public class UserRepositoryTest {
         assertThat(users.size()).isEqualTo(2);
     }
     @Test
-    @DisplayName("Debe retornar el DTO cuando el usuario existe")
+    @DisplayName("It should return the DTO if the user exists")
     void shouldFindUserById() {
         // 1. We prepare the data
         List<User> usersToSave = List.of(
@@ -71,18 +69,18 @@ public class UserRepositoryTest {
         assertThat(userDto.username()).isEqualTo("juan");
     }
     @Test
-    @DisplayName("Debe lanzar EntityNotFoundException cuando el ID no existe")
+    @DisplayName("It should throw an UserNotFoundException when the ID does not exist")
     void shouldThrowExceptionWhenUserNotFound() {
-        // Arrange: Definimos un ID que no existe (el 999 suele ser seguro en entornos de test)
+        // Arrange: We define an ID that doesn't exist (999 is usually safe in test environments)
         Long nonExistentId = 999L;
 
-        // Act & Assert: Verificamos que al llamar al método se lance la excepción esperada
-        UserNotFoundException exception = // Esperamos la excepción de Spring
+        // Act & Assert: We verify that calling the method triggers the expected exception
+        UserNotFoundException exception = // We catch the Spring exception
                 assertThrows(UserNotFoundException.class, () -> {
                     userRepository.getById(nonExistentId);
                 });
 
-        // Opcional: Verificar que el mensaje de la excepción sea el correcto
+        // Optional: Verify that the exception message is correct
         assertThat(exception.getMessage()).contains("not found");
     }
 }
