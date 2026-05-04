@@ -36,6 +36,7 @@ public class UserClassRepository implements UserRepository {
     public UserDTO createUser(UserDTO userDTO) {
         User userEntity = this.userMapper.toUserEntity(userDTO);
         userEntity.setPassword(userDTO.password());
+        userEntity.setId(null);
 
         return this.userMapper.toUserDto(this.jpaUserRepository.save(userEntity));
     }
