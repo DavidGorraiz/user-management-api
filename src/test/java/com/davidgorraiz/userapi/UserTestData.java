@@ -24,8 +24,8 @@ public class UserTestData {
         return user;
     }
     public static UserDTO createDefaultUserDto(String username, String email) {
-        UserDTO userdto = new UserDTO(ID_COUNTER.getAndIncrement(), username, email, Boolean.TRUE,
-                LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+        UserDTO userdto = new UserDTO(ID_COUNTER.getAndIncrement(), username, email, "1234",
+                Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
         return userdto;
     }
 }

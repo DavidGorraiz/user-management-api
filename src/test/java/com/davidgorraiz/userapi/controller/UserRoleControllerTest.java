@@ -31,11 +31,11 @@ public class UserRoleControllerTest {
         // Arrange
         List<UserRoleDTO> userRoles = List.of(
                 new UserRoleDTO(1L,
-                        new UserDTO(1L,"david","david@gmal.com",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        new UserDTO(1L,"david","david@gmal.com", "1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
                         new RoleDTO(1L, "ADMIN"),
                         LocalDateTime.now(), 1L, null),
                 new UserRoleDTO(2L,
-                        new UserDTO(2L,"juan","juan@gmal.com",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        new UserDTO(2L,"juan","juan@gmal.com", "1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
                         new RoleDTO(2L, "USER"),
                         LocalDateTime.now(), 1L, null)
 

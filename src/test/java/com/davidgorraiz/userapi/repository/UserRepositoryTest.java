@@ -78,4 +78,16 @@ public class UserRepositoryTest {
         // Assert
         assertThat(result).isEmpty();
     }
+    @Test
+    @DisplayName("It must return the created user")
+    void shouldCreateUser() {
+        List<UserDTO> users = List.of(
+                userRepository.createUser(UserTestData.createDefaultUserDto("Jose", "jose@test.com")),
+                userRepository.createUser(UserTestData.createDefaultUserDto("Pablo", "pablo@test.com"))
+        );
+        System.out.println(users);
+
+        assertThat(users).isNotEmpty();
+        assertThat(users.get(1).username()).isEqualTo("Pablo");
+    }
 }
