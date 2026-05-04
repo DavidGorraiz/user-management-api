@@ -2,9 +2,8 @@ package com.davidgorraiz.userapi.repository;
 
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.dto.mapper.UserMapper;
-import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
+import com.davidgorraiz.userapi.entity.User;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaUserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,5 +30,13 @@ public class UserClassRepository implements UserRepository {
         return this.jpaUserRepository.findById(id)
                 .map(userMapper::toUserDto);
         // Wenn findById leer ist, wird die Map-Methode nicht ausgeführt und gibt Optional.empty() zurück
+    }
+
+    @Override
+    public UserDTO createUser(UserDTO userDTO) {
+        User userEntity = this.userMapper.toUserEntity(userDTO);
+        userEntity.setPassword(userDTO.password());
+
+        return this.userMapper.toUserDto(this.jpaUserRepository.save(userEntity));
     }
 }
