@@ -66,6 +66,7 @@ public class UserServiceTest {
         // Assert
         assertThat(result).isNotNull();
         assertEquals("juan", result.username());
+        verify(userRepository).getById(2);
     }
     @Test
     @DisplayName("It should throw a UserNotFoundException when the ID does not exist")
@@ -77,5 +78,22 @@ public class UserServiceTest {
 
         // Act & Assert
         assertThrows(UserNotFoundException.class, () -> userService.getById(id));
+    }
+    @Test
+    void shouldCreateUserSuccessfully() {
+        // Given
+        UserDTO input = UserTestData.createDefaultUserDto("David", "david@gmail.com");
+        UserDTO saved = UserTestData.createDefaultUserDto("David", "david@gmail.com");
+
+        when(userRepository.createUser(input)).thenReturn(saved);
+
+        // When
+        UserDTO result = userService.createUser(input);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.username()).isEqualTo("David");
+
+        verify(userRepository).createUser(input);
     }
 }
