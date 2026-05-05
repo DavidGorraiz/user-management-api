@@ -23,4 +23,8 @@ public class UserService {
     public UserDTO getById(long id){
         return this.userRepository.getById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
+
+    public UserDTO createUser(UserDTO userDTO){
+        return this.userRepository.createUser(userDTO);
+    }
 }
