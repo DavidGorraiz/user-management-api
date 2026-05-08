@@ -4,6 +4,7 @@ import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.entity.User;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UserMapper {
 
     @InheritInverseConfiguration
     User toUserEntity(UserDTO userDto);
+
+    void updateUser(UserDTO userDTO, @MappingTarget User entity);
 }

@@ -3,6 +3,7 @@ package com.davidgorraiz.userapi.repository;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.dto.mapper.UserMapper;
 import com.davidgorraiz.userapi.entity.User;
+import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaUserRepository;
 import org.springframework.stereotype.Repository;
 
@@ -40,4 +41,12 @@ public class UserClassRepository implements UserRepository {
 
         return this.userMapper.toUserDto(this.jpaUserRepository.save(userEntity));
     }
+
+    @Override
+    public UserDTO updateUser(UserDTO userDTO) {
+        User user = this.userMapper.toUserEntity(userDTO);
+
+        return this.userMapper.toUserDto(this.jpaUserRepository.save(user));
+    }
+
 }

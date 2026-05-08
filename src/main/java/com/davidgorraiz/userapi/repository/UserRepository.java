@@ -9,4 +9,5 @@ public interface UserRepository {
     List<UserDTO> getAll();
     Optional<UserDTO> getById(long id);
     UserDTO createUser(UserDTO userDTO);
+    UserDTO updateUser(UserDTO userDTO);
 }
