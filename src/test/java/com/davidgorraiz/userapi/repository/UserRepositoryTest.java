@@ -81,10 +81,10 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("It must return the created user")
     void shouldCreateUser() {
-        List<UserDTO> users = List.of(
-                userRepository.createUser(UserTestData.createDefaultUserDto("Jose", "jose@test.com")),
-                userRepository.createUser(UserTestData.createDefaultUserDto("Pablo", "pablo@test.com"))
-        );
+        userRepository.createUser(UserTestData.createDefaultUserDto("Jose", "jose@test.com"));
+        userRepository.createUser(UserTestData.createDefaultUserDto("Pablo", "pablo@test.com"));
+
+        List<UserDTO> users = userRepository.getAll();
         System.out.println(users);
 
         assertThat(users).isNotEmpty();
