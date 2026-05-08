@@ -30,7 +30,7 @@ public class UserClassRepository implements UserRepository {
     public Optional<UserDTO> getById(long id) {
         return this.jpaUserRepository.findById(id)
                 .map(userMapper::toUserDto);
-        // Wenn findById leer ist, wird die Map-Methode nicht ausgeführt und gibt Optional.empty() zurück
+        // If findById is empty, the map method is not executed and returns Optional.empty()
     }
 
     @Override
@@ -43,10 +43,14 @@ public class UserClassRepository implements UserRepository {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
-        User user = this.userMapper.toUserEntity(userDTO);
+    public UserDTO updateUser(long id, UserDTO updateUserDTO) {
+        User userFound = this.jpaUserRepository.findById(id).orElse(null);
 
-        return this.userMapper.toUserDto(this.jpaUserRepository.save(user));
+        if (userFound != null) {
+            this.userMapper.updateUser(updateUserDTO, userFound);
+            return this.userMapper.toUserDto(this.jpaUserRepository.save(userFound));
+        }
+        return null;
     }
 
 }
