@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.repository;
 
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.dto.UserUpdateDTO;
 import com.davidgorraiz.userapi.dto.mapper.UserMapper;
 import com.davidgorraiz.userapi.entity.User;
 import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
@@ -43,13 +44,14 @@ public class UserClassRepository implements UserRepository {
     }
 
     @Override
-    public UserDTO updateUser(long id, UserDTO updateUserDTO) {
+    public UserDTO updateUser(long id, UserUpdateDTO updateUserDTO) {
         User userFound = this.jpaUserRepository.findById(id).orElse(null);
 
         if (userFound != null) {
             this.userMapper.updateUser(updateUserDTO, userFound);
             return this.userMapper.toUserDto(this.jpaUserRepository.save(userFound));
         }
+
         return null;
     }
 
