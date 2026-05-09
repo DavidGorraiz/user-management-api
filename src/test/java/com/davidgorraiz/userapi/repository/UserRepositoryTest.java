@@ -90,4 +90,21 @@ public class UserRepositoryTest {
         assertThat(users).isNotEmpty();
         assertThat(users.get(1).username()).isEqualTo("Pablo");
     }
+    @Test
+    @DisplayName("It must update user")
+    void shouldUpdateUser() {
+        UserDTO user = userRepository.createUser(UserTestData.createDefaultUserDto("Jose", "jose@test.com"));
+        Optional<UserDTO> userFound = userRepository.getById(user.id());
+        System.out.println(userFound);
+
+        assertThat(userFound.get().username()).isEqualTo("Jose");
+
+        userRepository.updateUser(user.id(),
+                UserTestData.createDefaultUpdateUserDto("Pablo", "pablo@test.com"));
+
+        userFound = userRepository.getById(user.id());
+        System.out.println(userFound);
+
+        assertThat(userFound.get().username()).isEqualTo("Pablo");
+    }
 }
