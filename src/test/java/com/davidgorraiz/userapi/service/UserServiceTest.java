@@ -2,6 +2,7 @@ package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.dto.UserUpdateDTO;
 import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,8 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +83,7 @@ public class UserServiceTest {
         assertThrows(UserNotFoundException.class, () -> userService.getById(id));
     }
     @Test
+    @DisplayName("It should create a new user from service")
     void shouldCreateUserSuccessfully() {
         // Given
         UserDTO input = UserTestData.createDefaultUserDto("David", "david@gmail.com");
@@ -95,5 +99,24 @@ public class UserServiceTest {
         assertThat(result.username()).isEqualTo("David");
 
         verify(userRepository).createUser(input);
+    }
+    @Test
+    @DisplayName("It should update a user from service")
+    void shouldUpdateUser(){
+        UserDTO userFound = UserTestData.createDefaultUserDto("Sofia", "sofia@test.co");
+        UserUpdateDTO userUpdate = UserTestData.createDefaultUpdateUserDto("Laura", "laura@test.co");
+        UserDTO userUpdated = new UserDTO(userFound.id(), "Laura", "laura@test.co",
+                "1234", Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+
+        when(userRepository.getById(userFound.id())).thenReturn(Optional.of(userFound));
+        when(userRepository.updateUser(userFound.id(), userUpdate)).thenReturn(userUpdated);
+
+        UserDTO result = userService.updateUser(userFound.id(), userUpdate);
+
+        assertThat(result).isNotNull();
+        assertThat(result.username()).isEqualTo("Laura");
+
+        verify(userRepository).getById(userFound.id());
+        verify(userRepository).updateUser(userFound.id(), userUpdate);
     }
 }
