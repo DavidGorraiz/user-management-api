@@ -2,6 +2,7 @@ package com.davidgorraiz.userapi.controller;
 
 import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.dto.UserUpdateDTO;
 import com.davidgorraiz.userapi.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -11,8 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.http.MediaType;
@@ -73,5 +73,21 @@ public class UserControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isCreated());
 
+    }
+    @Test
+    void shouldUpdateUser() throws Exception {
+        UserUpdateDTO input = UserTestData.createDefaultUpdateUserDto("Jose", "jose@test.co");
+        UserDTO updated = UserTestData.createDefaultUserDto("Jose", "jose@test.co");
+
+        when(userService.updateUser(updated.id(), input)).thenReturn(updated);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        String jsonContent = mapper.writeValueAsString(input);
+
+        mockMvc.perform(put("/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isOk());
     }
 }
