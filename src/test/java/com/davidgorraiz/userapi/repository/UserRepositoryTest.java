@@ -107,4 +107,19 @@ public class UserRepositoryTest {
 
         assertThat(userFound.get().username()).isEqualTo("Pablo");
     }
+    @Test
+    @DisplayName("It must delete a useer")
+    void shouldDeleteUser(){
+        UserDTO userCreated = userRepository.createUser(UserTestData.createDefaultUserDto(
+                "Maria", "maria@test.com"));
+        Optional<UserDTO> userFound = userRepository.getById(userCreated.id());
+
+        assertThat(userFound.get().username()).isEqualTo("Maria");
+
+        UserDTO userDeleted = userRepository.deleteUser(userFound.get().id());
+        System.out.println(userDeleted);
+
+        userFound = userRepository.getById(userDeleted.id());
+        assertThat(userFound).isEmpty();
+    }
 }
