@@ -55,4 +55,17 @@ public class UserClassRepository implements UserRepository {
         return null;
     }
 
+    @Override
+    public UserDTO deleteUser(long id) {
+        User userToDelete = this.jpaUserRepository.findById(id).orElse(null);
+
+        if (userToDelete != null){
+            UserDTO userDTO = this.userMapper.toUserDto(userToDelete);
+            this.jpaUserRepository.delete(userToDelete);
+            return userDTO;
+        }
+
+        return null;
+    }
+
 }
