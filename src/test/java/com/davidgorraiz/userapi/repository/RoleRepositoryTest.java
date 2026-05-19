@@ -23,14 +23,12 @@ public class RoleRepositoryTest {
     @Autowired
     private JpaRoleRepository jpaRoleRepository;
 
+    // Arrange
+    Role role1 = new Role(null, "ADMIN");
+    Role role2 = new Role(null, "USER");
+
     @Test
     void shouldFindAllRoles() {
-        // Arrange
-        Role role1 = new Role();
-        role1.setName("Admin");
-        Role role2 = new Role();
-        role2.setName("User");
-
         jpaRoleRepository.save(role1);
         jpaRoleRepository.save(role2);
 
@@ -41,5 +39,16 @@ public class RoleRepositoryTest {
         // Assert
         assertThat(roles).isNotEmpty();
         assertThat(roles.size()).isEqualTo(2);
+    }
+    @Test
+    void shouldReturnRoleById(){
+        jpaRoleRepository.save(role1);
+        jpaRoleRepository.save(role2);
+
+        RoleDTO role = roleRepository.getById(role2.getId());
+        System.out.println(role);
+
+        assertThat(role).isNotNull();
+        assertThat(role.name()).isEqualTo(role2.getName());
     }
 }
