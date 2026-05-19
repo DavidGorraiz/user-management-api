@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -45,10 +46,10 @@ public class RoleRepositoryTest {
         jpaRoleRepository.save(role1);
         jpaRoleRepository.save(role2);
 
-        RoleDTO role = roleRepository.getById(role2.getId());
+        Optional<RoleDTO> role = roleRepository.getById(role2.getId());
         System.out.println(role);
 
-        assertThat(role).isNotNull();
-        assertThat(role.name()).isEqualTo(role2.getName());
+        assertThat(role).isNotEmpty();
+        assertThat(role.get().name()).isEqualTo(role2.getName());
     }
 }
