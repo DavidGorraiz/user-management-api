@@ -7,6 +7,7 @@ import com.davidgorraiz.userapi.repository.JpaRepositories.JpaRoleRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RoleClassRepository implements RoleRepository{
@@ -25,11 +26,7 @@ public class RoleClassRepository implements RoleRepository{
     }
 
     @Override
-    public RoleDTO getById(long id) {
-        Role roleEntity = this.jpaRoleRepository.findById(id).orElse(null);
-        if (roleEntity != null){
-            return this.roleMapper.toRoleDto(roleEntity);
-        }
-        return null;
+    public Optional<RoleDTO> getById(long id) {
+        return this.jpaRoleRepository.findById(id).map(roleMapper::toRoleDto);
     }
 }
