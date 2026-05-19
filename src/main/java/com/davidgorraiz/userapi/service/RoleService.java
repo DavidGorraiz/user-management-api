@@ -1,6 +1,8 @@
 package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.exceptions.RoleNotFoundException;
+import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,9 @@ public class RoleService {
 
     public List<RoleDTO> getAll(){
         return this.roleRepository.getAll();
+    }
+
+    public RoleDTO getById(long id){
+        return this.roleRepository.getById(id).orElseThrow(() -> new RoleNotFoundException(id));
     }
 }
