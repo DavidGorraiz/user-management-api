@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RoleRepository {
     List<RoleDTO> getAll();
+    RoleDTO getById(long id);
 }
