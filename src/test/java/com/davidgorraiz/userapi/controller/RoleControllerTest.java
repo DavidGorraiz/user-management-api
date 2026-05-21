@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,13 +25,13 @@ public class RoleControllerTest {
     @MockitoBean
     private RoleService roleService;
 
+    List<RoleDTO> roles = List.of(
+            new RoleDTO(1L, "Admin"),
+            new RoleDTO(2L, "User")
+    );
+
     @Test
     void shouldReturnAllRoles() throws Exception {
-
-        List<RoleDTO> roles = List.of(
-                new RoleDTO(1L, "Admin"),
-                new RoleDTO(2L, "User")
-        );
 
         when(roleService.getAll()).thenReturn(roles);
 
@@ -39,5 +40,13 @@ public class RoleControllerTest {
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].name").value("Admin"))
                 .andExpect(jsonPath("$[1].name").value("User"));
+    }
+    @Test
+    void shouldReurnRoleBYId() throws Exception {
+        when(roleService.getById(roles.get(1).id())).thenReturn(roles.get(1));
+
+        mockMvc.perform(get("/roles/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("User"));
     }
 }
