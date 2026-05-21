@@ -4,6 +4,7 @@ import com.davidgorraiz.userapi.dto.RoleDTO;
 import com.davidgorraiz.userapi.service.RoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +23,10 @@ public class RoleController {
     @GetMapping
     public ResponseEntity<List<RoleDTO>> getAll(){
         return ResponseEntity.ok(this.roleService.getAll());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<RoleDTO> getById(@PathVariable long id){
+        return ResponseEntity.ok(this.roleService.getById(id));
     }
 }
