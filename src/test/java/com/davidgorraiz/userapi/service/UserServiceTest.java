@@ -119,4 +119,26 @@ public class UserServiceTest {
         verify(userRepository).getById(userFound.id());
         verify(userRepository).updateUser(userFound.id(), userUpdate);
     }
+
+    @Test
+    @DisplayName("It shoudl delete an user from service")
+    void shouldDeleteUser(){
+        // Simulamos los datos que debe devolver el repositorio
+        UserDTO userToDelete = UserTestData.createDefaultUserDto("James", "james@test.com");
+
+        // Simulamos lo que devuelve la llamada al getById y lo que devuelve el delete desde repositorio
+        when(userRepository.getById(userToDelete.id())).thenReturn(Optional.of(userToDelete));
+        when(userRepository.deleteUser(userToDelete.id())).thenReturn(userToDelete);
+
+        // Ahora si llamamos al servicio y lo guardamos como el resultado
+        UserDTO result = userService.deleteUser(userToDelete.id());
+
+        // Verificamos que los datos sean los mismos y que no devuelva null
+        assertThat(userToDelete).isNotNull();
+        assertThat(userToDelete.username()).isEqualTo("James");
+
+        // Verificamos que se llame al reposiorio desde el servicio
+        verify(userRepository).getById(userToDelete.id());
+        verify(userRepository).deleteUser(userToDelete.id());
+    }
 }
