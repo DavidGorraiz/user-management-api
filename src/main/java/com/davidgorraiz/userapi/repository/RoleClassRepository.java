@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.repository;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.dto.mapper.RoleMapper;
 import com.davidgorraiz.userapi.entity.Role;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaRoleRepository;
@@ -28,5 +29,15 @@ public class RoleClassRepository implements RoleRepository{
     @Override
     public Optional<RoleDTO> getById(long id) {
         return this.jpaRoleRepository.findById(id).map(roleMapper::toRoleDto);
+    }
+
+    @Override
+    public RoleDTO updateRole(long id, RoleUpdateDTO role) {
+        Role roleFound = this.jpaRoleRepository.findById(id).orElse(null);
+        if (roleFound != null){
+            this.roleMapper.updateRoleByDTO(role, roleFound);
+            return this.roleMapper.toRoleDto(this.jpaRoleRepository.save(roleFound));
+        }
+        return null;
     }
 }

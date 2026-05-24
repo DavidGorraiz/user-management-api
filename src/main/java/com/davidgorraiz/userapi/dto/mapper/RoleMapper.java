@@ -1,9 +1,11 @@
 package com.davidgorraiz.userapi.dto.mapper;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.entity.Role;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -14,4 +16,6 @@ public interface RoleMapper {
 
     @InheritInverseConfiguration
     Role toRoleEntity(RoleDTO roleDTO);
+
+    void updateRoleByDTO(RoleUpdateDTO roleDTO, @MappingTarget Role role);
 }
