@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,14 +82,16 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("It must return the created user")
     void shouldCreateUser() {
-        userRepository.createUser(UserTestData.createDefaultUserDto("Jose", "jose@test.com"));
-        userRepository.createUser(UserTestData.createDefaultUserDto("Pablo", "pablo@test.com"));
+        // Simular datos
+        UserDTO userToCreate = new UserDTO(null, "NEW", "new@test.com", "1234",
+                Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+        System.out.println(userToCreate);
+        // Usar el metodo para crear usuario
+        UserDTO result = userRepository.createUser(userToCreate);
+        System.out.println(result);
 
-        List<UserDTO> users = userRepository.getAll();
-        System.out.println(users);
-
-        assertThat(users).isNotEmpty();
-        assertThat(users.get(1).username()).isEqualTo("Pablo");
+        // Verificar que el usuario se crear en la base de datos
+        assertThat(result.username()).isEqualTo(jpaUserRepository.findById(result.id()).get().getUsername());
     }
     @Test
     @DisplayName("It must update user")

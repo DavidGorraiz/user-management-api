@@ -2,6 +2,7 @@ package com.davidgorraiz.userapi.repository;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
 import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
+import com.davidgorraiz.userapi.dto.mapper.RoleMapper;
 import com.davidgorraiz.userapi.entity.Role;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaRoleRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,8 @@ public class RoleRepositoryTest {
     private RoleRepository roleRepository;
     @Autowired
     private JpaRoleRepository jpaRoleRepository;
+    @Autowired
+    private RoleMapper roleMapper;
 
     // Arrange
     Role role1 = new Role(null, "ADMIN");
@@ -52,6 +55,17 @@ public class RoleRepositoryTest {
 
         assertThat(role).isNotEmpty();
         assertThat(role.get().name()).isEqualTo(role2.getName());
+    }
+    @Test
+    void shouldCreateRole(){
+        // Simular datos
+        Role roleToCreate = new Role(null, "New Role");
+        RoleDTO roleToCreateDTO = roleMapper.toRoleDto(roleToCreate);
+        // Usar el metodo para guardar
+        RoleDTO result = roleRepository.createRole(roleToCreateDTO);
+
+        // Verificar que se creo el role en la base de datos
+        assertThat(result.name()).isEqualTo(jpaRoleRepository.findById(result.id()).get().getName());
     }
     @Test
     void shouldUpdateRole() {
