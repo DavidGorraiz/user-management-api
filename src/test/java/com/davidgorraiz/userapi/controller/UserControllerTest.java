@@ -90,4 +90,18 @@ public class UserControllerTest {
                 .content(jsonContent))
                 .andExpect(status().isOk());
     }
+    @Test
+    void shouldDeleteUser() throws Exception {
+        // Simlamos los datos de entrada y de saida del controlador
+        UserDTO input = UserTestData.createDefaultUserDto("James", "james@test.com");
+        long inputId = input.id();
+
+        // Simulamos lo que debe hacer la capa de servicio
+        when(userService.deleteUser(inputId)).thenReturn(input);
+
+        // Simulamos el endpoint con el http de eliminar
+        mockMvc.perform(delete("/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("james@test.com"));
+    }
 }
