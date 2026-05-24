@@ -30,7 +30,14 @@ public class UserService {
     }
 
     public UserDTO updateUser(long id, UserUpdateDTO userUpdateDTO){
+        // Verificamos que el usuario si se encuentre sino el metodo arroja una excepcion
         UserDTO userFound = getById(id);
         return this.userRepository.updateUser(id, userUpdateDTO);
+    }
+
+    public UserDTO deleteUser(long id){
+        // Buscamos el usuario por si no se encuentra arrojar una excepcion
+        UserDTO userFound = getById(id);
+        return this.userRepository.deleteUser(id);
     }
 }
