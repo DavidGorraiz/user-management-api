@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.repository;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.entity.Role;
 import com.davidgorraiz.userapi.repository.JpaRepositories.JpaRoleRepository;
 import jakarta.transaction.Transactional;
@@ -51,5 +52,21 @@ public class RoleRepositoryTest {
 
         assertThat(role).isNotEmpty();
         assertThat(role.get().name()).isEqualTo(role2.getName());
+    }
+    @Test
+    void shouldUpdateRole() {
+        // Simular los datos de entrada y de salida
+        RoleUpdateDTO input = new RoleUpdateDTO("CREATOR");
+        // Debemos guardar en la base de datos el role que queremos actualizar
+        jpaRoleRepository.save(role2);
+        long id = role2.getId();
+
+        // Probamos el metodo y lo guardamos como resultado
+        RoleDTO result = roleRepository.updateRole(id, input);
+        System.out.println(result);
+
+        // Verificamos que el resultado tenga el mismo id que el encontrado y que su nombre cambiara
+        assertThat(result.id()).isEqualTo(role2.getId());
+        assertThat(role2.getName()).isEqualTo(input.name());
     }
 }
