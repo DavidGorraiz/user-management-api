@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi;
 
 import com.davidgorraiz.userapi.dto.UserDTO;
+import com.davidgorraiz.userapi.dto.UserUpdateDTO;
 import com.davidgorraiz.userapi.entity.User;
 
 import java.time.LocalDateTime;
@@ -27,5 +28,10 @@ public class UserTestData {
         UserDTO userdto = new UserDTO(ID_COUNTER.getAndIncrement(), username, email, "1234",
                 Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
         return userdto;
+    }
+    public static UserUpdateDTO createDefaultUpdateUserDto(String username, String email) {
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO(username, email, "1234",
+                Boolean.TRUE, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+        return userUpdateDTO;
     }
 }
