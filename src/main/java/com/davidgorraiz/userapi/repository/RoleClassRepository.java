@@ -32,6 +32,13 @@ public class RoleClassRepository implements RoleRepository{
     }
 
     @Override
+    public RoleDTO createRole(RoleDTO role) {
+        Role roleToSave = this.roleMapper.toRoleEntity(role);
+        roleToSave.setId(null);
+        return this.roleMapper.toRoleDto(this.jpaRoleRepository.save(roleToSave));
+    }
+
+    @Override
     public RoleDTO updateRole(long id, RoleUpdateDTO role) {
         Role roleFound = this.jpaRoleRepository.findById(id).orElse(null);
         if (roleFound != null){

@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface RoleRepository {
     List<RoleDTO> getAll();
     Optional<RoleDTO> getById(long id);
+    RoleDTO createRole(RoleDTO role);
     RoleDTO updateRole(long id, RoleUpdateDTO role);
 }
