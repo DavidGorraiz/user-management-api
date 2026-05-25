@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.exceptions.RoleNotFoundException;
 import com.davidgorraiz.userapi.exceptions.UserNotFoundException;
 import com.davidgorraiz.userapi.repository.RoleRepository;
@@ -23,5 +24,14 @@ public class RoleService {
 
     public RoleDTO getById(long id){
         return this.roleRepository.getById(id).orElseThrow(() -> new RoleNotFoundException(id));
+    }
+
+    public RoleDTO createRole(RoleDTO role){
+        return this.roleRepository.createRole(role);
+    }
+
+    public RoleDTO updateRole(long id, RoleUpdateDTO role){
+        RoleDTO roleFound = getById(id);
+        return this.roleRepository.updateRole(id, role);
     }
 }
