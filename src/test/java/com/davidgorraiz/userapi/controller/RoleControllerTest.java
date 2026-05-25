@@ -1,15 +1,20 @@
 package com.davidgorraiz.userapi.controller;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.service.RoleService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,5 +53,45 @@ public class RoleControllerTest {
         mockMvc.perform(get("/roles/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("User"));
+    }
+    @Test
+    void shouldCreateRole() throws Exception {
+        // Simular datos de entrada y salida
+        RoleDTO roleToCreate = new RoleDTO(1L, "NEW ROLE");
+
+        // Simular el comportamiento del servicio
+        when(roleService.createRole(roleToCreate)).thenReturn(roleToCreate);
+
+        // Transformar el rol en json
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        String jsonContent = mapper.writeValueAsString(roleToCreate);
+
+        // Simular el endpoint con los datos
+        mockMvc.perform(post("/roles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isCreated());
+
+    }
+    @Test
+    void shouldUpdateRole() throws Exception {
+        // Simular datos de entrada y salida
+        RoleUpdateDTO input = new RoleUpdateDTO("NEW ROLE");
+        RoleDTO roleUpdated = new RoleDTO(roles.get(0).id(), input.name());
+
+        // Simular lo que devuelve el servicio
+        when(roleService.updateRole(roles.get(0).id(), input)).thenReturn(roleUpdated);
+
+        // Transformar la entrada en json para el body
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        String jsonContent = mapper.writeValueAsString(input);
+
+        // Verificar que el endpoint funciona
+        mockMvc.perform(put("/roles/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent))
+                .andExpect(status().isOk());
     }
 }
