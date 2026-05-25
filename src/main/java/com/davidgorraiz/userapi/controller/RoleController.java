@@ -1,12 +1,11 @@
 package com.davidgorraiz.userapi.controller;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.service.RoleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +27,15 @@ public class RoleController {
     @GetMapping("{id}")
     public ResponseEntity<RoleDTO> getById(@PathVariable long id){
         return ResponseEntity.ok(this.roleService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<RoleDTO> createRole(@RequestBody RoleDTO role){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.createRole(role));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<RoleDTO> updateRole(@PathVariable long id, @RequestBody RoleUpdateDTO roleUpdateDTO){
+        return ResponseEntity.ok(this.roleService.updateRole(id, roleUpdateDTO));
     }
 }
