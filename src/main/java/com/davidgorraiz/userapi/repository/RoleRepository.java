@@ -11,4 +11,5 @@ public interface RoleRepository {
     Optional<RoleDTO> getById(long id);
     RoleDTO createRole(RoleDTO role);
     RoleDTO updateRole(long id, RoleUpdateDTO role);
+    RoleDTO deleteRole(long id);
 }

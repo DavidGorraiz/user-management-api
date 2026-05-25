@@ -47,4 +47,15 @@ public class RoleClassRepository implements RoleRepository{
         }
         return null;
     }
+
+    @Override
+    public RoleDTO deleteRole(long id) {
+        Role roleFound = this.jpaRoleRepository.findById(id).orElse(null);
+        if (roleFound != null){
+            RoleDTO roleDeleted = this.roleMapper.toRoleDto(roleFound);
+            this.jpaRoleRepository.delete(roleFound);
+            return roleDeleted;
+        }
+        return null;
+    }
 }
