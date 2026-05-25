@@ -1,6 +1,7 @@
 package com.davidgorraiz.userapi.service;
 
 import com.davidgorraiz.userapi.dto.RoleDTO;
+import com.davidgorraiz.userapi.dto.RoleUpdateDTO;
 import com.davidgorraiz.userapi.exceptions.RoleNotFoundException;
 import com.davidgorraiz.userapi.repository.RoleRepository;
 import org.junit.jupiter.api.Test;
@@ -69,5 +70,43 @@ public class RoleServiceTest {
         System.out.println(ex);
 
         assertEquals("Role with id: 999 not found", ex.getMessage());
+    }
+    @Test
+    void shouldCreateRole(){
+        // Simular datos de nuevo rol
+        RoleDTO roleToCreate = new RoleDTO(1L, "NEW ROLE");
+
+        // Simular lo que pasa cuando se llama al reposiorio
+        when(roleRepository.createRole(roleToCreate)).thenReturn(roleToCreate);
+
+        // Probar el metodo en el servicio
+        RoleDTO result = roleService.createRole(roleToCreate);
+
+        // verificar que los datos coincidan
+        assertThat(roleToCreate.name()).isEqualTo(result.name());
+
+        // verificar que se llame al repo desde el servicio
+        verify(roleRepository).createRole(roleToCreate);
+    }
+    @Test
+    void shouldUpdateRole(){
+        // Simmular datos para actualizar
+        RoleDTO roleFound = roles.get(1);
+        RoleUpdateDTO roleUpdate = new RoleUpdateDTO("ROLE UPDATED");
+        RoleDTO roleUpdated = new RoleDTO(roleFound.id(), roleUpdate.name());
+
+        // Simulamos lo que devolvera el repositorio
+        when(roleRepository.getById(roleFound.id())).thenReturn(Optional.of(roleFound));
+        when(roleRepository.updateRole(roleFound.id(), roleUpdate)).thenReturn(roleUpdated);
+
+        // Llamamos al metodo que queremos probar y se guarda en un resultado
+        RoleDTO result = roleService.updateRole(roleFound.id(), roleUpdate);
+
+        // Verificamos que los datos coincidan
+        assertThat(roleUpdated).isEqualTo(result);
+
+        // Verificar que se llamo el repositorio
+        verify(roleRepository).getById(roleFound.id());
+        verify(roleRepository).updateRole(roleFound.id(), roleUpdate);
     }
 }
