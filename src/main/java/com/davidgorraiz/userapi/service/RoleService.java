@@ -34,4 +34,9 @@ public class RoleService {
         RoleDTO roleFound = getById(id);
         return this.roleRepository.updateRole(id, role);
     }
+
+    public RoleDTO deleteRole(long id){
+        RoleDTO roleFound = getById(id);
+        return this.roleRepository.deleteRole(id);
+    }
 }
