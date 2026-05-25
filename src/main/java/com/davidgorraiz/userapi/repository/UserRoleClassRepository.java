@@ -19,7 +19,7 @@ public class UserRoleClassRepository implements UserRoleRepository{
     }
 
     @Override
-    public List<UserRoleDTO> getAll() {
-        return this.userRoleMapper.toDtos(this.jpaUserRoleReposiory.findAll());
+    public List<UserRoleDTO> getAll(long userId) {
+        return this.userRoleMapper.toDtos(this.jpaUserRoleReposiory.findByUserId(userId));
     }
 }

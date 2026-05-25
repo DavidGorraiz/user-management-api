@@ -5,5 +5,5 @@ import com.davidgorraiz.userapi.dto.UserRoleDTO;
 import java.util.List;
 
 public interface UserRoleRepository {
-    List<UserRoleDTO> getAll();
+    List<UserRoleDTO> getAll(long userId);
 }
