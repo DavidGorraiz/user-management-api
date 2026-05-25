@@ -109,4 +109,23 @@ public class RoleServiceTest {
         verify(roleRepository).getById(roleFound.id());
         verify(roleRepository).updateRole(roleFound.id(), roleUpdate);
     }
+    @Test
+    void shouldDeleteRole(){
+        // Simular datos a borrar
+        RoleDTO roleToDelete = roles.get(1);
+
+        // Simular lo que devuelve la capa repositorio
+        when(roleRepository.getById(roleToDelete.id())).thenReturn(Optional.of(roleToDelete));
+        when(roleRepository.deleteRole(roleToDelete.id())).thenReturn(roleToDelete);
+
+        // Probamos el metodo y lo guardamos en el resultado
+        RoleDTO result = roleService.deleteRole(roleToDelete.id());
+
+        // Verificar que los datos coinciden
+        assertThat(roleToDelete).isEqualTo(result);
+
+        // Verificar que se llama a los metodos del repositorio
+        verify(roleRepository).getById(roleToDelete.id());
+        verify(roleRepository).deleteRole(roleToDelete.id());
+    }
 }
