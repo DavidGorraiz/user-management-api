@@ -83,4 +83,17 @@ public class RoleRepositoryTest {
         assertThat(result.id()).isEqualTo(role2.getId());
         assertThat(role2.getName()).isEqualTo(input.name());
     }
+    @Test
+    void shouldDeleteRole(){
+        // Simular datos creados en la base
+        RoleDTO roleCreated = roleRepository.createRole(roleMapper.toRoleDto(role2));
+        long id = roleCreated.id();
+
+        // Probamos el metodo de eliminar
+        RoleDTO result = roleRepository.deleteRole(id);
+
+        // Verificamos los datos y qe se borrara el dato en la base
+        assertThat(roleCreated).isEqualTo(result);
+        assertThat(roleRepository.getById(id)).isEmpty();
+    }
 }
