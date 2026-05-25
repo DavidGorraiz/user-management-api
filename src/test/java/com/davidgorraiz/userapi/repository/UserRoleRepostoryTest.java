@@ -85,11 +85,11 @@ public class UserRoleRepostoryTest {
         jpaUserRoleReposiory.save(userRole2);
 
         // Act
-        List<UserRoleDTO> userRoles = userRoleRepository.getAll();
-        System.out.println(userRoles);
+        List<UserRoleDTO> userRoles1 = userRoleRepository.getAll(user1.getId());
+        System.out.println(userRoles1);
 
         // Assert
-        assertThat(userRoles).isNotEmpty();
-        assertThat(userRoles.size()).isEqualTo(2);
+        assertThat(userRoles1).isNotEmpty();
+        assertThat(userRoles1.get(0).role().name()).isEqualTo(role1.getName());
     }
 }
