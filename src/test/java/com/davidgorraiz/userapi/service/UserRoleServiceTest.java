@@ -29,28 +29,30 @@ public class UserRoleServiceTest {
     @Test
     void shoulReturnAllUserRoles(){
         // Arrange
+        UserDTO user1 = new UserDTO(1L,"david","david@gmal.com","1234",
+                Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now());
         List<UserRoleDTO> userRoles = List.of(
                 new UserRoleDTO(1L,
-                        new UserDTO(1L,"david","david@gmal.com","1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        user1,
                         new RoleDTO(1L, "ADMIN"),
                         LocalDateTime.now(), 1L, null),
                 new UserRoleDTO(2L,
-                        new UserDTO(2L,"juan","juan@gmal.com","1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        user1,
                         new RoleDTO(2L, "USER"),
                         LocalDateTime.now(), 1L, null)
 
                 );
 
-        when(userRoleRepository.getAll()).thenReturn(userRoles);
+        when(userRoleRepository.getAll(user1.id())).thenReturn(userRoles);
 
         // Act
-        List<UserRoleDTO> result = userRoleService.getAll();
+        List<UserRoleDTO> result = userRoleService.getAll(user1.id());
         System.out.println(result);
 
         // Assert
         assertEquals(2, result.size());
-        assertEquals(1L, result.get(0).id());
+        assertEquals(userRoles.get(0).role().name(), result.get(0).role().name());
 
-        verify(userRoleRepository).getAll();
+        verify(userRoleRepository).getAll(user1.id());
     }
 }
