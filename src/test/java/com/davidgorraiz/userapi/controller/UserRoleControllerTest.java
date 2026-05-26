@@ -1,5 +1,6 @@
 package com.davidgorraiz.userapi.controller;
 
+import com.davidgorraiz.userapi.UserTestData;
 import com.davidgorraiz.userapi.dto.RoleDTO;
 import com.davidgorraiz.userapi.dto.UserDTO;
 import com.davidgorraiz.userapi.dto.UserRoleDTO;
@@ -27,26 +28,30 @@ public class UserRoleControllerTest {
     private UserRoleService userRoleService;
 
     @Test
-    void shouldReturnAllUserRoles() throws Exception {
-        // Arrange
+    void shouldReturUsersRoles() throws Exception {
+        // Simular datos
+        UserDTO user = UserTestData.createDefaultUserDto("user1", "user1@test.com");
+
         List<UserRoleDTO> userRoles = List.of(
                 new UserRoleDTO(1L,
-                        new UserDTO(1L,"david","david@gmal.com", "1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        user,
                         new RoleDTO(1L, "ADMIN"),
                         LocalDateTime.now(), 1L, null),
                 new UserRoleDTO(2L,
-                        new UserDTO(2L,"juan","juan@gmal.com", "1234",Boolean.TRUE, LocalDateTime.now(),LocalDateTime.now(), LocalDateTime.now()),
+                        user,
                         new RoleDTO(2L, "USER"),
                         LocalDateTime.now(), 1L, null)
 
         );
 
-        when(userRoleService.getAll()).thenReturn(userRoles);
+        // Simulamos el comportamiento del servicio
+        when(userRoleService.getAll(user.id())).thenReturn(userRoles);
 
-        mockMvc.perform(get("/UserRole"))
+        // Llamamos el endpoint del metodo y verificamos que los datos coincidan
+        mockMvc.perform(get("/users/1/roles"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].id").value("1"))
-                .andExpect(jsonPath("$[1].id").value("2"));
+                .andExpect(jsonPath("$[0].role.name").value(userRoles.get(0).role().name()))
+                .andExpect(jsonPath("$[1].role.name").value(userRoles.get(1).role().name()));
     }
 }
