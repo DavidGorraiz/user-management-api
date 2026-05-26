@@ -15,7 +15,7 @@ public class UserRoleService {
         this.userRoleRepository = userRoleRepository;
     }
 
-    public List<UserRoleDTO> getAll(){
-        return this.userRoleRepository.getAll();
+    public List<UserRoleDTO> getAll(long userId){
+        return this.userRoleRepository.getAll(userId);
     }
 }
