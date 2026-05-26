@@ -4,13 +4,14 @@ import com.davidgorraiz.userapi.dto.UserRoleDTO;
 import com.davidgorraiz.userapi.service.UserRoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/UserRole")
+@RequestMapping("/users/{userId}/roles")
 public class UserRoleController {
     private final UserRoleService userRoleService;
 
@@ -19,7 +20,7 @@ public class UserRoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserRoleDTO>> getAll(){
-        return ResponseEntity.ok(this.userRoleService.getAll());
+    public ResponseEntity<List<UserRoleDTO>> getAll(@PathVariable long userId){
+        return ResponseEntity.ok(this.userRoleService.getAll(userId));
     }
 }
